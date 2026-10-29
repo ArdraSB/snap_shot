@@ -1,0 +1,43 @@
+:root {
+  font-family: Inter, "Helvetica Neue", Arial, sans-serif;
+  color: #f5f3ef;
+  background: #10100f;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  font-optical-sizing: auto;
+  font-weight: 400;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  min-width: 320px;
+  scroll-behavior: smooth;
+}
+
+body {
+  background:
+    radial-gradient(ellipse at 8% 12%, rgba(137, 54, 91, 0.14), transparent 32%),
+    radial-gradient(ellipse at 96% 34%, rgba(157, 52, 109, 0.2), transparent 37%),
+    radial-gradient(ellipse at 68% 88%, rgba(93, 57, 117, 0.16), transparent 38%),
+    #10100f;
+  background-attachment: fixed;
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+}
+
+button,
+a {
+  -webkit-tap-highlight-color: transparent;
+}
+
+::selection {
+  color: #fff4f7;
+  background: #98486d;
+}
