@@ -37,7 +37,10 @@ const photos = [
   { category: 'Travel', image: '/gallery/photo-31.jpg', alt: 'Silhouettes on a beach at sunset' },
   { category: 'Travel', image: '/gallery/photo-32.jpg', alt: 'People walking along the shore at dusk' },
   { category: 'Nature', image: '/gallery/photo-33.jpg', alt: 'Fish swimming among aquatic plants' },
-];
+].map((photo) => ({
+  ...photo,
+  image: `${import.meta.env.BASE_URL}${photo.image.slice(1)}`,
+}));
 
 // Replace these example links with your real profile/contact links.
 const links = {
@@ -112,7 +115,7 @@ export default function App() {
     <main className="snapshot-site" id="top">
       <header className="site-header">
         <a className="wordmark" href="#top" aria-label="Snap-shot home">
-          <img className="wordmark-logo" src="/watermark/site-logo.png" alt="Snap-shot" />
+          <img className="wordmark-logo" src={`${import.meta.env.BASE_URL}watermark/site-logo.png`} alt="Snap-shot" />
         </a>
         <nav className="main-nav">
           <a href="#gallery">Gallery</a><a href="#brand">Brand work</a><a href="#wallpapers">Wallpapers</a><a href="#presets">Presets</a><a href="#contact">Contact</a>
