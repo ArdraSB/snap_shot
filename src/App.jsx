@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import './App.css';
+import PresetPage from './Preset.jsx';
 
 // Keep these paths aligned with the images in your public folder.
 // Example: public/gallery/photo-01.jpg -> /gallery/photo-01.jpg
@@ -67,11 +68,41 @@ export default function App() {
   const [selectedPhoto, setSelectedPhoto] = useState(null);
   const [lightboxPhotos, setLightboxPhotos] = useState(photos);
   const [wallpaperIndex, setWallpaperIndex] = useState(0);
+  const [currentPage, setCurrentPage] = useState(
+    () => window.location.hash === '#presets' ? 'presets' : 'home'
+  );
 
   const filteredPhotos = useMemo(
     () => category === 'All' ? photos : photos.filter((photo) => photo.category === category),
     [category]
   );
+  const showPresets = () => {
+    if (window.location.hash !== '#presets') {
+      window.history.pushState(
+        { ...(window.history.state || {}), snapshotPresetEntry: true },
+        '',
+        `${window.location.pathname}${window.location.search}#presets`
+      );
+    }
+    setCurrentPage('presets');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+  const showPortfolio = () => {
+    if (window.history.state && window.history.state.snapshotPresetEntry) {
+      window.history.back();
+      return;
+    }
+
+    setCurrentPage('home');
+    if (window.location.hash === '#presets') {
+      window.history.replaceState(
+        window.history.state,
+        '',
+        `${window.location.pathname}${window.location.search}`
+      );
+    }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
   const wallpapers = [photos[0], photos[19], photos[13], photos[30], photos[28]];
   const brandPhotos = [photos[24], photos[5], photos[3], photos[1]];
   const showPhoto = (photo, collection = photos) => {
@@ -111,6 +142,19 @@ export default function App() {
     return () => { document.body.style.overflow = ''; };
   }, [selectedPhoto]);
 
+  useEffect(() => {
+    const handleHistoryChange = () => {
+      setCurrentPage(window.location.hash === '#presets' ? 'presets' : 'home');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
+    window.addEventListener('popstate', handleHistoryChange);
+    return () => window.removeEventListener('popstate', handleHistoryChange);
+  }, []);
+
+  if (currentPage === 'presets') {
+    return <PresetPage onBack={showPortfolio} />;
+  }
+
   return (
     <main className="snapshot-site" id="top">
       <header className="site-header">
@@ -118,7 +162,12 @@ export default function App() {
           <img className="wordmark-logo" src={`${import.meta.env.BASE_URL}watermark/site-logo.png`} alt="Snap-shot" />
         </a>
         <nav className="main-nav">
-          <a href="#gallery">Gallery</a><a href="#brand">Brand work</a><a href="#wallpapers">Wallpapers</a><a href="#presets">Presets</a><a href="#contact">Contact</a>
+          <a href="#gallery">Gallery</a><a href="#brand">Brand work</a><a href="#wallpapers">Wallpapers</a>
+          <a href="#presets" onClick={(event) => {
+            event.preventDefault();
+            showPresets();
+          }}>Presets</a>
+          <a href="#contact">Contact</a>
         </nav>
         <a className="outline-button header-cta" href={links.instagram} target="_blank" rel="noreferrer">Let's connect <span>↗</span></a>
       </header>
@@ -198,7 +247,13 @@ export default function App() {
           <div className="section-topline"><span>04 / MY EDITING LOOK</span></div>
           <h2>Bring the mood <em>to your photos</em></h2>
           <p>Get the presets I use to shape my signature colors and create a consistent look for your own photos.</p>
-          <a className="outline-button" href={links.gumroad} target="_blank" rel="noreferrer">Explore my presets <span>↗</span></a>
+          {/* <a className="outline-button" href={links.gumroad} target="_blank" rel="noreferrer">Explore my presets <span>↗</span></a> */}
+          <a href="#presets" className="outline-button" onClick={(event) => {
+            event.preventDefault();
+            showPresets();
+          }}>
+            Explore my presets <span>↗</span>
+          </a>
         </div>
       </section>
 
