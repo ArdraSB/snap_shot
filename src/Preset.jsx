@@ -5,28 +5,26 @@ import './Preset.css';
 // Add new presets here. Each object creates one reusable product card.
 export const presets = [
   {
-    id: 'golden-hour',
-    name: 'Golden Hour',
-    subtitle: 'Warm light, soft highlights',
+    id: 'Lush Botanica / Vivid Nature',
+    name: 'Lush Botanica / Vivid Nature',
+    subtitle: 'Rich contrast and jewel-toned foliage for dramatic nature photography.',
     description:
-      'A warm, sun-kissed look for golden-hour portraits, nature and everyday moments.',
-    price: '₹199',
+      'Bring outdoor shots to life with rich color depth and striking contrast. This preset deepens shadows to create dimension, enhances green foliage to a vibrant jewel-toned finish, and makes natural florals pop. It is ideal for nature, garden, and outdoor landscape photography where you want punchy, high-impact tones.',
+    price: 'Freebie',
     rawImage: `${import.meta.env.BASE_URL}Preset/Raw-1.jpg`,
     editImage: `${import.meta.env.BASE_URL}Preset/Edit-1.jpg`,
-    tag: 'WARM & GLOWING',
     includes: 'Lightroom mobile preset',
     checkoutUrl: 'https://YOUR-CHECKOUT-LINK-1',
   },
   {
-    id: 'muted-mood',
-    name: 'Muted Mood',
-    subtitle: 'Soft, calm and understated',
+    id: 'Vintage Film / Film Tone',
+    name: 'Vintage Film / Film Tone',
+    subtitle: 'Soft analog tones for timeless lifestyle photography.',
     description:
-      'Muted colours and a gentle mood for quiet scenes, travel frames and portraits.',
+      'Elevate your everyday photos with a timeless, nostalgic aesthetic. This preset softens harsh contrast, adds a subtle film grain texture, and gently mutes greens for an authentic, analog look. Designed to enhance skin tones and maintain natural brightness, it gives your images a warm, effortless storytelling vibe—perfect for lifestyle, portrait, and outdoor shots.',
     price: '₹199',
     rawImage: `${import.meta.env.BASE_URL}Preset/Raw-2.jpg`,
     editImage: `${import.meta.env.BASE_URL}Preset/Edit-2.jpg`,
-    tag: 'SOFT & MUTED',
     includes: 'Lightroom mobile preset',
     checkoutUrl: 'https://YOUR-CHECKOUT-LINK-2',
   },
@@ -36,7 +34,8 @@ function BeforeAfterSlider({ preset }) {
   const [position, setPosition] = useState(50);
 
   return (
-    <div className="preset-comparison">
+    <div className="preset-comparison">+
+    
       <img
         className="preset-comparison-image"
         src={preset.rawImage}
