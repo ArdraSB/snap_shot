@@ -1,4 +1,5 @@
 
+import { useState } from 'react';
 import './Preset.css';
 
 // Add new presets here. Each object creates one reusable product card.
@@ -10,7 +11,8 @@ export const presets = [
     description:
       'A warm, sun-kissed look for golden-hour portraits, nature and everyday moments.',
     price: '₹199',
-    image: '/presets/golden-hour.jpg',
+    rawImage: `${import.meta.env.BASE_URL}Preset/Raw-1.jpg`,
+    editImage: `${import.meta.env.BASE_URL}Preset/Edit-1.jpg`,
     tag: 'WARM & GLOWING',
     includes: 'Lightroom mobile preset',
     checkoutUrl: 'https://YOUR-CHECKOUT-LINK-1',
@@ -22,24 +24,62 @@ export const presets = [
     description:
       'Muted colours and a gentle mood for quiet scenes, travel frames and portraits.',
     price: '₹199',
-    image: '/presets/muted-mood.jpg',
+    rawImage: `${import.meta.env.BASE_URL}Preset/Raw-2.jpg`,
+    editImage: `${import.meta.env.BASE_URL}Preset/Edit-2.jpg`,
     tag: 'SOFT & MUTED',
     includes: 'Lightroom mobile preset',
     checkoutUrl: 'https://YOUR-CHECKOUT-LINK-2',
   },
-  {
-    id: 'soft-film',
-    name: 'Soft Film',
-    subtitle: 'A subtle film-inspired finish',
-    description:
-      'A soft, film-inspired starting point for photographs with a little nostalgia.',
-    price: '₹199',
-    image: '/presets/soft-film.jpg',
-    tag: 'FILM INSPIRED',
-    includes: 'Lightroom mobile preset',
-    checkoutUrl: 'https://YOUR-CHECKOUT-LINK-3',
-  },
 ];
+
+function BeforeAfterSlider({ preset }) {
+  const [position, setPosition] = useState(50);
+
+  return (
+    <div className="preset-comparison">
+      <img
+        className="preset-comparison-image"
+        src={preset.rawImage}
+        alt={`${preset.name} photo before editing`}
+        loading="lazy"
+        decoding="async"
+      />
+      <img
+        className="preset-comparison-image preset-comparison-edited"
+        src={preset.editImage}
+        alt={`${preset.name} photo after editing`}
+        loading="lazy"
+        decoding="async"
+        style={{ clipPath: `inset(0 0 0 ${position}%)` }}
+      />
+
+      <span className="preset-comparison-label preset-comparison-before">
+        BEFORE
+      </span>
+      <span className="preset-comparison-label preset-comparison-after">
+        AFTER
+      </span>
+      <span
+        className="preset-comparison-divider"
+        style={{ left: `${position}%` }}
+        aria-hidden="true"
+      >
+        <span />
+      </span>
+
+      <input
+        className="preset-comparison-control"
+        type="range"
+        min="0"
+        max="100"
+        value={position}
+        onChange={(event) => setPosition(Number(event.currentTarget.value))}
+        aria-label={`Compare before and after for ${preset.name}`}
+        aria-valuetext={`${position}% before, ${100 - position}% after`}
+      />
+    </div>
+  );
+}
 
 function PresetCard({ preset, index }) {
   const hasCheckoutLink =
@@ -49,12 +89,7 @@ function PresetCard({ preset, index }) {
   return (
     <article className="preset-product-card">
       <div className="preset-product-image-wrap">
-        <img
-          className="preset-product-image"
-          src={preset.image}
-          alt={`${preset.name} preset preview`}
-          loading="lazy"
-        />
+        <BeforeAfterSlider preset={preset} />
 
         <span className="preset-product-number">
           {String(index + 1).padStart(2, '0')}
@@ -145,6 +180,14 @@ export default function PresetPage({ onBack }) {
       </header>
 
       <section className="preset-store-hero">
+        <div className="preset-store-landscape" aria-hidden="true">
+          <img
+            src={presets[0].editImage}
+            alt=""
+            loading="lazy"
+            decoding="async"
+          />
+        </div>
         <div className="preset-store-copy">
           <div className="eyebrow">
             <span /> THE SNAPSHOT EDIT / PRESET STORE
@@ -168,15 +211,6 @@ export default function PresetPage({ onBack }) {
           </a>
         </div>
 
-        <div className="preset-store-visual">
-          <img
-            src="/presets/preset-cover.jpg"
-            alt="A sample photograph edited with Snap Shot presets"
-          />
-          <span className="preset-store-visual-caption">
-            COLOUR · LIGHT · FEELING
-          </span>
-        </div>
       </section>
 
       <section
@@ -189,9 +223,15 @@ export default function PresetPage({ onBack }) {
         </div>
 
         <div className="preset-products-heading">
-          <h2>
-            Find your <em>look.</em>
-          </h2>
+          <div className="preset-products-title">
+            <h2>
+              Find your <em>look.</em>
+            </h2>
+            <p className="preset-comparison-hint">
+              <span aria-hidden="true">↔</span>
+              Drag the slider to compare the original photo with the preset edit.
+            </p>
+          </div>
           <p>
             Choose a preset to explore. Your purchase is
             completed securely on the checkout platform.
